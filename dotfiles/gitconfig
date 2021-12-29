@@ -1,0 +1,13 @@
+[user]
+  name = Olivier Poupier
+  email = olivier@poupier.net
+[mergetool]
+	prompt = false
+[merge]
+	conflictstyle = diff3
+[push]
+	default = simple
+[init]
+	defaultBranch = main
+[pull]
+	ff = only
