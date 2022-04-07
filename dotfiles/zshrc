@@ -1,3 +1,4 @@
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -42,7 +43,7 @@ DISABLE_UPDATE_PROMPT="true"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
@@ -60,7 +61,7 @@ COMPLETION_WAITING_DOTS="true"
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -121,3 +122,40 @@ unset __conda_setup
 
 alias vim='nvim'
 export EDITOR='nvim'
+
+export NVM_DIR=~/.nvm
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# brew?
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+
+strlen () {
+    FOO=$1
+    local zero='%([BSUbfksu]|([FB]|){*})'
+    LEN=${#${(S%%)FOO//$~zero/}}
+    echo $LEN
+}
+
+# show right prompt with date ONLY when command is executed
+preexec () {
+    DATE=$( date +"[%H:%M:%S]" )
+    local len_right=$( strlen "$DATE" )
+    len_right=$(( $len_right+1 ))
+    local right_start=$(($COLUMNS - $len_right))
+
+    local len_cmd=$( strlen "$@" )
+    local len_prompt=$(strlen "$PROMPT" )
+    local len_left=$(($len_cmd+$len_prompt))
+
+    RDATE="\033[${right_start}C ${DATE}"
+
+    if [ $len_left -lt $right_start ]; then
+        # command does not overwrite right prompt
+        # ok to move up one line
+        echo -e "\033[1A${RDATE}"
+    else
+        echo -e "${RDATE}"
+    fi
+
+}
