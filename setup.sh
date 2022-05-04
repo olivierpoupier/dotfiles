@@ -24,6 +24,8 @@ brew doctor
 brew install mas
 brew tap caskroom/cask
 
+xcode-select —-install
+
 #divvy
 mas install 413857545
 #slack
@@ -45,8 +47,6 @@ npm install -g @angular/cli
 brew install python
 #.net core
 brew install --cask dotnet
-# zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 function install_dot() {
   local source="$1"
@@ -55,8 +55,9 @@ function install_dot() {
   ln -s "$HOME/$source" "$HOME/$target"
 }
 
-install_dot dotfiles/dotfiles/zshrc .zshrc
-install_dot dotfiles/dotfiles/vimrc .config/nvim/init.vim
+install_dot ~/dotfiles/dotfiles/theme.zsh-theme ~/.oh-my-zsh/themes/my-own-theme.zsh-theme
+install_dot ~/dotfiles/dotfiles/zshrc ~/.zshrc
+install_dot ~/dotfiles/dotfiles/vimrc ~/.config/nvim/init.vim
 
 
 [ ! -f ~/.gitconfig ] && cp $HOME/dotfiles/dotfiles/gitconfig ~/.gitconfig
@@ -69,6 +70,8 @@ fi
 ### Dev tools
 # iTerm2
 brew install --cask iterm2
+# oh-my-zsh
+curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
 # neovim
 brew install --cask neovim
 # postman
