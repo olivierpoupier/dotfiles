@@ -78,7 +78,6 @@ EOF
 
 # Development tools
 brew install --cask postman
-brew install --cask azure-data-studio
 brew install --cask slack
 brew install --cask microsoft-excel
 brew install --cask chatgpt
@@ -100,7 +99,7 @@ code --install-extension eamodio.gitlens
 code --install-extension RobbOwen.synthwave-vscode
 code --install-extension DotJoshJohnson.xml
 code --install-extension wmaurer.change-case
-
+code --install-extension ms-mssql.mssql
 # Cursor Extensions (Cursor is based on VS Code, so many extensions are compatible)
 echo "Installing Cursor extensions..."
 cursor --install-extension ms-dotnettools.csharp
@@ -116,6 +115,7 @@ cursor --install-extension eamodio.gitlens
 cursor --install-extension RobbOwen.synthwave-vscode
 cursor --install-extension DotJoshJohnson.xml
 cursor --install-extension wmaurer.change-case
+cursor --install-extension ms-mssql.mssql
 
 ### Configure Dock
 echo "Configuring Dock..."
@@ -141,7 +141,6 @@ add_to_dock "/Applications/Postman.app"
 add_to_dock "/Applications/Visual Studio Code.app"
 add_to_dock "/Applications/Cursor.app"
 add_to_dock "/Applications/iTerm.app"
-add_to_dock "/Applications/Azure Data Studio.app"
 add_to_dock "/System/Applications/System Settings.app"
 add_to_dock "/System/Applications/Utilities/Keychain Access.app"
 add_to_dock "/Applications/Docker.app"
