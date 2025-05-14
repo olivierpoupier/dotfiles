@@ -39,8 +39,25 @@ fi
 [ -f ./dotfiles/zshrc ] && cp ./dotfiles/zshrc ~/.zshrc
 [ -f ./dotfiles/theme.zsh-theme ] && cp ./dotfiles/theme.zsh-theme ~/.oh-my-zsh/themes/
 
-# Node.js
-brew install node
+# Node.js with NVM
+if [ ! -d "$HOME/.nvm" ]; then
+    echo "Installing NVM..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    
+    # Load NVM immediately
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+fi
+
+# Install Node.js LTS version
+nvm install --lts
+nvm use --lts
+
+# Install Angular CLI
+npm install -g @angular/cli
+
+# Network tools
+brew install nmap
 
 # .NET versions
 brew install --cask dotnet-sdk
@@ -50,13 +67,6 @@ brew install --cask dotnet-sdk8-0
 
 # Docker
 brew install --cask docker
-
-# Node.js and Angular CLI
-brew install node
-npm install -g @angular/cli
-
-# Network tools
-brew install nmap
 
 # Python, pip, and venv
 brew install python
