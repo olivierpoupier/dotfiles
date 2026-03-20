@@ -78,7 +78,6 @@ python3 -m ensurepip --upgrade
 echo "Installing applications..."
 # VS Code and Cursor
 brew install --cask visual-studio-code
-brew install --cask cursor
 
 # Add VS Code and Cursor to PATH
 cat << EOF >> ~/.zprofile
@@ -88,14 +87,9 @@ EOF
 
 # Development tools
 brew install --cask postman
-brew install --cask slack
-brew install --cask microsoft-excel
-brew install --cask chatgpt
-brew install --cask figma
 
 # VS Code Extensions
 echo "Installing VS Code extensions..."
-code --install-extension GitHub.copilot
 code --install-extension ms-dotnettools.csharp
 code --install-extension ms-dotnettools.vscode-dotnet-runtime
 code --install-extension mikestead.dotenv
@@ -103,30 +97,12 @@ code --install-extension golang.go
 code --install-extension ms-toolsai.jupyter
 code --install-extension ms-azuretools.vscode-docker
 code --install-extension dbaeumer.vscode-eslint
-code --install-extension esbenp.prettier-vscode
 code --install-extension ms-python.python
 code --install-extension eamodio.gitlens
 code --install-extension RobbOwen.synthwave-vscode
 code --install-extension DotJoshJohnson.xml
 code --install-extension wmaurer.change-case
 code --install-extension ms-mssql.mssql
-# Cursor Extensions (Cursor is based on VS Code, so many extensions are compatible)
-echo "Installing Cursor extensions..."
-cursor --install-extension ms-dotnettools.csharp
-cursor --install-extension ms-dotnettools.vscode-dotnet-runtime
-cursor --install-extension mikestead.dotenv
-cursor --install-extension golang.go
-cursor --install-extension ms-toolsai.jupyter
-cursor --install-extension ms-azuretools.vscode-docker
-cursor --install-extension dbaeumer.vscode-eslint
-cursor --install-extension esbenp.prettier-vscode
-cursor --install-extension ms-python.python
-cursor --install-extension eamodio.gitlens
-cursor --install-extension RobbOwen.synthwave-vscode
-cursor --install-extension DotJoshJohnson.xml
-cursor --install-extension wmaurer.change-case
-cursor --install-extension ms-mssql.mssql
-
 ### Configure Dock
 echo "Configuring Dock..."
 # Remove all apps from Dock
@@ -143,18 +119,13 @@ add_to_dock "/System/Applications/Calendar.app"
 add_to_dock "/Applications/Safari.app"
 add_to_dock "/System/Applications/Mail.app"
 add_to_dock "/System/Applications/Messages.app"
-add_to_dock "/Applications/Slack.app"
-add_to_dock "/Applications/ChatGPT.app"
 add_to_dock "/System/Applications/Music.app"
 add_to_dock "/System/Applications/Notes.app"
 add_to_dock "/Applications/Postman.app"
-add_to_dock "/Applications/Visual Studio Code.app"
-add_to_dock "/Applications/Cursor.app"
 add_to_dock "/Applications/iTerm.app"
 add_to_dock "/System/Applications/System Settings.app"
 add_to_dock "/System/Applications/Utilities/Keychain Access.app"
 add_to_dock "/Applications/Docker.app"
-add_to_dock "/Applications/Microsoft Excel.app"
 
 # Restart Dock to apply changes
 killall Dock
