@@ -39,6 +39,9 @@ fi
 [ -f ./dotfiles/zshrc ] && cp ./dotfiles/zshrc ~/.zshrc
 [ -f ./dotfiles/theme.zsh-theme ] && cp ./dotfiles/theme.zsh-theme ~/.oh-my-zsh/themes/
 
+# tmux
+brew install tmux
+
 # Node.js with NVM
 if [ ! -d "$HOME/.nvm" ]; then
     echo "Installing NVM..."

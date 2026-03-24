@@ -6,7 +6,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 # Oh-my-zsh theme
-ZSH_THEME="eastwood"
+ZSH_THEME="opoupier"
 
 # Oh-my-zsh settings
 ENABLE_CORRECTION="true"
