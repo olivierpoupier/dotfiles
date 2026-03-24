@@ -110,18 +110,6 @@ else
     info "Installing TPM..."
     git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
     ok "TPM installed"
-# Go setup
-mkdir -p $HOME/go/{bin,src}
-
-# Node.js with NVM
-if [ ! -d "$HOME/.nvm" ]; then
-    echo "Installing NVM..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    
-    # Load NVM immediately
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-fi
 
 # ─── nvim config ──────────────────────────────────────────
 info "Linking nvim config..."
@@ -163,6 +151,19 @@ if [[ -x "$TPM_DIR/bin/install_plugins" ]]; then
     ok "tmux plugins installed"
 else
     warn "Start tmux and press prefix + I to install plugins"
+fi
+
+# Go setup
+mkdir -p $HOME/go/{bin,src}
+
+# Node.js with NVM
+if [ ! -d "$HOME/.nvm" ]; then
+    echo "Installing NVM..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    
+    # Load NVM immediately
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 fi
 
 # Install Node.js LTS version
