@@ -27,10 +27,6 @@ zstyle ':completion:*:*:docker-*:*' option-stacking yes
 # ENVIRONMENT VARIABLES
 # ====================================================================
 
-# Custom paths
-export FORZA_ROOT="$HOME/MAPEK/Forza/TradeFiles-TestCases/GoldmanFuturesTrade"
-export ASPNETCORE_ENVIRONMENT=Development
-
 # Editor configuration
 export EDITOR='nvim'
 
@@ -99,19 +95,6 @@ alias vim='nvim'
 # TOOL INITIALIZATIONS
 # ====================================================================
 
-# Conda initialization
-__conda_setup="$('/Users/olivierpoupier/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/olivierpoupier/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/olivierpoupier/opt/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/olivierpoupier/opt/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
 # NVM initialization
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -125,10 +108,11 @@ fi
 # ====================================================================
 # GOLANG CONFIGURATION (uncomment if needed)
 # ====================================================================
-# export GOPATH="$HOME/go"
-# export PATH="$PATH:$GOPATH/bin"
-export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
-export PATH="$(python3 -m site --user-base)/bin:$PATH"
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GOPATH/bin"
+# export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+# export PATH="$(python3 -m site --user-base)/bin:$PATH"
+#
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/olivierpoupier/.docker/completions $fpath)
 autoload -Uz compinit
