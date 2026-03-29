@@ -31,7 +31,7 @@ warn()  { printf "\033[1;33m[warn]\033[0m  %s\n" "$1"; }
 error() { printf "\033[1;31m[error]\033[0m %s\n" "$1"; exit 1; }
 
 # Git
-[ -f ./configs/gitconfig ] && cp ./configs/gitconfig ~/.gitconfig
+[ -f ./dotfiles/gitconfig] && cp ./dotfiles/gitconfig ~/.gitconfig
 
 # ─── Homebrew ─────────────────────────────────────────────
 if ! command -v brew &>/dev/null; then
@@ -52,7 +52,6 @@ fi
 # ─── Brew packages ────────────────────────────────────────
 BREW_FORMULAES=(
     wget
-    iterm2
     neovim
     tmux
     ripgrep       # Required for Telescope live_grep
@@ -76,10 +75,10 @@ done
 # ─── Brew Casks ────────────────────────────────────────
 BREW_CASKS=(
     iterm2
+    font-jetbrains-mono-nerd-font
     docker
     visual-studio-code
     postman
-    font-jetbrains-mono-nerd-font
 )
 
 info "Installing brew packages..."
