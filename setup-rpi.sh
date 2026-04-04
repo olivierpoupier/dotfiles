@@ -41,6 +41,7 @@ APT_PACKAGES=(
     wget
     curl
     git
+    zsh
     tmux
     ripgrep
     fd-find
@@ -48,7 +49,9 @@ APT_PACKAGES=(
     build-essential
     cmake
     unzip
-    gettext     # needed to build neovim from source
+    gettext        # needed to build neovim from source
+    keychain       # SSH agent management
+    openssh-client # provides ssh-keygen
 )
 
 info "Installing apt packages..."
@@ -68,6 +71,48 @@ if command -v fdfind &>/dev/null && ! command -v fd &>/dev/null; then
     ok "Created fd symlink"
 fi
 
+# ─── Oh My Zsh ───────────────────────────────────────────
+if [ -d "$HOME/.oh-my-zsh" ]; then
+    ok "Oh My Zsh already installed"
+else
+    info "Installing Oh My Zsh..."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    ok "Oh My Zsh installed"
+fi
+
+# ─── Zsh theme ───────────────────────────────────────────
+info "Copying zsh theme..."
+cp "$DOTFILES_DIR/dotfiles/opoupier.zsh-theme" "$HOME/.oh-my-zsh/custom/themes/opoupier.zsh-theme"
+ok "opoupier.zsh-theme copied to oh-my-zsh custom themes"
+
+# ─── Zsh config ─────────────────────────────────────────
+info "Linking zshrc..."
+if [[ -f "$HOME/.zshrc" || -L "$HOME/.zshrc" ]]; then
+    warn "Backing up existing ~/.zshrc → ~/.zshrc.bak"
+    mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
+fi
+ln -sf "$DOTFILES_DIR/dotfiles/zshrc-debian" "$HOME/.zshrc"
+ok "~/.zshrc → $DOTFILES_DIR/dotfiles/zshrc-debian"
+
+# ─── Set Zsh as default shell ────────────────────────────
+if [ "$(basename "$SHELL")" != "zsh" ]; then
+    info "Setting zsh as default shell..."
+    sudo chsh -s "$(which zsh)" "$USER"
+    ok "Default shell set to zsh"
+else
+    ok "Zsh is already the default shell"
+fi
+
+# ─── SSH key ─────────────────────────────────────────────
+if [ -f "$HOME/.ssh/id_rsa" ]; then
+    ok "SSH key already exists"
+else
+    info "Generating SSH key..."
+    mkdir -p "$HOME/.ssh"
+    ssh-keygen -t rsa -b 4096 -f "$HOME/.ssh/id_rsa" -N ""
+    ok "SSH key generated at ~/.ssh/id_rsa"
+fi
+
 # ─── Neovim (build from source for latest version) ───────
 if command -v nvim &>/dev/null; then
     ok "Neovim already installed"
@@ -76,7 +121,7 @@ else
     NVIM_BUILD_DIR=$(mktemp -d)
     git clone --depth 1 https://github.com/neovim/neovim.git "$NVIM_BUILD_DIR"
     cd "$NVIM_BUILD_DIR"
-    make CMAKE_BUILD_TYPE=Release
+    make CMAKE_BUILD_TYPE=Release || error "Neovim build failed"
     sudo make install
     cd "$DOTFILES_DIR"
     rm -rf "$NVIM_BUILD_DIR"
@@ -125,19 +170,7 @@ else
     ok "Go installed"
 fi
 
-mkdir -p "$HOME/go/{bin,src}"
-
-# Add Go to PATH in .bashrc if not already present
-if ! grep -q '/usr/local/go/bin' "$HOME/.bashrc" 2>/dev/null; then
-    cat << 'EOF' >> "$HOME/.bashrc"
-
-# Go
-export PATH="$PATH:/usr/local/go/bin"
-export GOPATH="$HOME/go"
-export PATH="$PATH:$GOPATH/bin"
-EOF
-    ok "Go PATH added to .bashrc"
-fi
+mkdir -p "$HOME/go/bin" "$HOME/go/src"
 
 # ─── tmux config ──────────────────────────────────────────
 info "Linking tmux config..."
@@ -187,7 +220,7 @@ info "Installing treesitter parsers..."
 PARSERS=(
     lua c_sharp typescript javascript
     html css json yaml markdown
-    bash sql dockerfile
+    bash go sql dockerfile
 )
 for parser in "${PARSERS[@]}"; do
     nvim --headless "+TSInstall! $parser" +qa 2>/dev/null || true
@@ -206,7 +239,8 @@ fi
 # ─── Node.js with NVM ────────────────────────────────────
 if [ ! -d "$HOME/.nvm" ]; then
     info "Installing NVM..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    NVM_LATEST=$(curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep -Po '"tag_name": "\K[^"]*')
+    curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_LATEST}/install.sh" | bash
 
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -219,19 +253,20 @@ nvm install --lts
 nvm use --lts
 
 # Install Angular CLI
-npm install -g @angular/cli
+if command -v ng &>/dev/null; then
+    ok "Angular CLI already installed"
+else
+    npm install -g @angular/cli
+    ok "Angular CLI installed"
+fi
 
 # ─── .NET ─────────────────────────────────────────────────
-info "Installing .NET SDK..."
-curl -sSL https://dot.net/v1/dotnet-install.sh | bash
-if ! grep -q '.dotnet' "$HOME/.bashrc" 2>/dev/null; then
-    cat << 'EOF' >> "$HOME/.bashrc"
-
-# .NET
-export DOTNET_ROOT="$HOME/.dotnet"
-export PATH="$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools"
-EOF
-    ok ".NET PATH added to .bashrc"
+if [ -d "$HOME/.dotnet" ]; then
+    ok ".NET SDK already installed"
+else
+    info "Installing .NET SDK..."
+    curl -sSL https://dot.net/v1/dotnet-install.sh | bash
+    ok ".NET SDK installed"
 fi
 
 # ─── JetBrains Mono Nerd Font ─────────────────────────────
@@ -249,4 +284,4 @@ else
 fi
 
 echo ""
-echo "Setup complete! Please restart your terminal (or run 'source ~/.bashrc') for all changes to take effect."
+echo "Setup complete! Please log out and back in for zsh to take effect."

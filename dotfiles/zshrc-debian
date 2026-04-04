@@ -24,14 +24,17 @@ zstyle ':completion:*:*:docker:*' option-stacking yes
 zstyle ':completion:*:*:docker-*:*' option-stacking yes
 
 # ====================================================================
+# SSH AGENT (keychain - persists across sessions)
+# ====================================================================
+
+eval "$(keychain --eval --quiet id_rsa)"
+
+# ====================================================================
 # ENVIRONMENT VARIABLES
 # ====================================================================
 
 # Editor configuration
 export EDITOR='nvim'
-
-# Add brew sbin to PATH (only once)
-export PATH="/usr/local/sbin:$PATH"
 
 # ====================================================================
 # HISTORY CONFIGURATION
@@ -106,17 +109,19 @@ if command -v ng >/dev/null 2>&1; then
 fi
 
 # ====================================================================
-# GOLANG CONFIGURATION (uncomment if needed)
+# GOLANG CONFIGURATION
 # ====================================================================
+
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
-# export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
-# export PATH="$(python3 -m site --user-base)/bin:$PATH"
-#
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=("$HOME/.docker/completions" $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
-export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
+
+# ====================================================================
+# PATH ADDITIONS
+# ====================================================================
+
+# .NET
+export DOTNET_ROOT="$HOME/.dotnet"
+export PATH="$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools"
+
+export PATH="$HOME/.local/bin:$PATH"
